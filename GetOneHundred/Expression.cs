@@ -4,35 +4,306 @@ using System.Collections.Generic;
 
 namespace ReversePolishNotation
 {
-    public class ExpressionEnumerator : IEnumerator<byte[]>
+    public class NumsetEnumerator : IEnumerator<byte[]>
     {
+        public byte[][][] opcodeMask = 
+        {
+            new byte[0][], // 1 numbers
+            new[] // 2 numbers
+            {
+                new byte[]
+                {
+                    1
+                }
+            },
+            new[] // 3 numbers
+            {
+                new byte[]
+                {
+                    0, 2
+                },
+                new byte[]
+                {
+                    1, 1
+                }
+            },
+            new[] // 5 numbers
+            {
+                new byte[]
+                {
+                    0, 0, 0, 4
+                },
+                new byte[]
+                {
+                    0, 0, 1, 3
+                },
+                new byte[]
+                {
+                    0, 0, 2, 2
+                },
+                new byte[]
+                {
+                    0, 0, 3, 1
+                },
+                new byte[]
+                {
+                    0, 1, 0, 3
+                },
+                new byte[]
+                {
+                    0, 1, 1, 2
+                },
+                new byte[]
+                {
+                    0, 1, 2, 1
+                },
+                new byte[]
+                {
+                    0, 2, 0, 2
+                },
+                new byte[]
+                {
+                    0, 2, 1, 1
+                },
+                new byte[]
+                {
+                    1, 0, 0, 3
+                },
+                new byte[]
+                {
+                    1, 0, 1, 2
+                },
+                new byte[]
+                {
+                    1, 0, 2, 1
+                },
+                new byte[]
+                {
+                    1, 1, 0, 2
+                },
+                new byte[]
+                {
+                    1, 1, 1, 1
+                },
+            },
+            new[] // 6 numbers
+            {
+                new byte[]
+                {
+                    0, 0, 0, 0, 5
+                },
+                new byte[]
+                {
+                    0, 0, 0, 1, 4
+                },
+                new byte[]
+                {
+                    0, 0, 0, 2, 3
+                },
+                new byte[]
+                {
+                    0, 0, 0, 3, 2
+                },
+                new byte[]
+                {
+                    0, 0, 0, 4, 1
+                },
+                new byte[]
+                {
+                    0, 0, 1, 0, 4
+                },
+                new byte[]
+                {
+                    0, 0, 1, 1, 3
+                },
+                new byte[]
+                {
+                    0, 0, 1, 2, 2
+                },
+                new byte[]
+                {
+                    0, 0, 1, 3, 1
+                },
+                new byte[]
+                {
+                    0, 0, 2, 0, 3
+                },
+                new byte[]
+                {
+                    0, 0, 2, 0, 3
+                },
+                new byte[]
+                {
+                    0, 0, 2, 1, 2
+                },
+                new byte[]
+                {
+                    0, 0, 2, 2, 1
+                },
+                new byte[]
+                {
+                    0, 0, 3, 0, 2
+                },
+                new byte[]
+                {
+                    0, 0, 3, 1, 1
+                },
+                new byte[]
+                {
+                    0, 1, 0, 0, 4
+                },
+                new byte[]
+                {
+                    0, 1, 0, 1, 3
+                },
+                new byte[]
+                {
+                    0, 1, 0, 2, 2
+                },
+                new byte[]
+                {
+                    0, 1, 0, 3, 1
+                },
+                new byte[]
+                {
+                    0, 1, 1, 0, 3
+                },
+                new byte[]
+                {
+                    0, 1, 1, 1, 2
+                },
+                new byte[]
+                {
+                    0, 1, 1, 2, 1
+                },
+                new byte[]
+                {
+                    0, 1, 2, 0, 2
+                },
+                new byte[]
+                {
+                    0, 1, 2, 1, 1
+                },
+                new byte[]
+                {
+                    0, 2, 0, 0, 3
+                },
+                new byte[]
+                {
+                    0, 2, 0, 0, 3
+                },
+                new byte[]
+                {
+                    0, 2, 0, 1, 2
+                },
+                new byte[]
+                {
+                    0, 2, 0, 2, 1
+                },
+                new byte[]
+                {
+                    0, 2, 1, 0, 2
+                },
+                new byte[]
+                {
+                    0, 2, 1, 1, 1
+                },
+                new byte[]
+                {
+                    1, 0, 0, 0, 4
+                },
+                new byte[]
+                {
+                    1, 0, 0, 1, 3
+                },
+                new byte[]
+                {
+                    1, 0, 0, 2, 2
+                },
+                new byte[]
+                {
+                    1, 0, 0, 3, 1
+                },
+                new byte[]
+                {
+                    1, 0, 1, 0, 3
+                },
+                new byte[]
+                {
+                    1, 0, 1, 1, 2
+                },
+                new byte[]
+                {
+                    1, 0, 1, 2, 1
+                },
+                new byte[]
+                {
+                    1, 0, 2, 0, 2
+                },
+                new byte[]
+                {
+                    1, 0, 2, 1, 1
+                },
+                new byte[]
+                {
+                    1, 1, 0, 0, 3
+                },
+                new byte[]
+                {
+                    1, 1, 0, 1, 2
+                },
+                new byte[]
+                {
+                    1, 0, 1, 2, 1
+                },
+                new byte[]
+                {
+                    1, 0, 2, 0, 2
+                },
+                new byte[]
+                {
+                    1, 0, 2, 1, 1
+                },
+                new byte[]
+                {
+                    1, 0, 2, 1, 1
+                },
+                new byte[]
+                {
+                    1, 1, 0, 0, 3
+                },
+                new byte[]
+                {
+                    1, 1, 0, 1, 2
+                },
+                new byte[]
+                {
+                    1, 1, 0, 2, 1
+                },
+                new byte[]
+                {
+                    1, 1, 1, 0, 2
+                },
+                new byte[]
+                {
+                    1, 1, 1, 1, 1
+                }
+            }
+        };
+        
         private int _position = -1;
-        private int _opPosition = 3124;
-        private byte[] _data = new byte[11];
+        private byte[] _data = new byte[6];
         private byte _current;
 
         public bool MoveNext()
         {
-            _opPosition++;
-            if (_opPosition == 3125)
-            {
-                _position++;
-                _opPosition = 0;
-                _data[10] = (byte) (_position % 10);
-                _data[8] = (byte) (_position  / 10 % 10);
-                _data[6] = (byte) (_position  / 100 % 10);
-                _data[4] = (byte) (_position  / 1000 % 10);
-                _data[2] = (byte) (_position  / 10000 % 10);
-                _data[0] = (byte) (_position  / 100000 % 10);
-            }
-            
+            _position++;
             return _position < 1000000;
         }
 
         public void Reset()
         {
             _position = -1;
-            _opPosition = 3124;
         }
 
         object IEnumerator.Current => Current;
@@ -42,11 +313,12 @@ namespace ReversePolishNotation
         {
             get
             {
-                _data[1] = (byte) (_opPosition % 5 + 10);
-                _data[3] = (byte) (_opPosition / 5 % 5 + 10);
-                _data[5] = (byte) (_opPosition / 25 % 5 + 10);
-                _data[7] = (byte) (_opPosition / 125 % 5 + 10);
-                _data[9] = (byte) (_opPosition / 625 % 5 + 10);
+                _data[0] = (byte) (_position % 10);
+                _data[1] = (byte) (_position / 10 % 10);
+                _data[2] = (byte) (_position / 100 % 10);
+                _data[3] = (byte) (_position / 1000 % 10);
+                _data[4] = (byte) (_position / 10000 %  10);
+                _data[5] = (byte) (_position / 100000 %  10);
                 
                 return _data;
             }
@@ -54,23 +326,6 @@ namespace ReversePolishNotation
 
         public void Dispose()
         {
-        }
-    }
-    
-    public class Expression: IEnumerable
-    {
-        private byte[] _data;
-        private char[] _charData;
-
-        public Expression()
-        {
-            _data = new byte[6];
-            _charData = new char[11];
-        }
-        
-        public IEnumerator GetEnumerator()
-        {
-            return _data.GetEnumerator();
         }
     }
 }
