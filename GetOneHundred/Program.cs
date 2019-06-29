@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Threading;
 using LevelDB;
 
@@ -61,6 +63,8 @@ namespace ReversePolishNotation
 
         static int[][] GetNumsets(byte[] numset)
         {
+            
+            return new int[][] { numset.Select(i => (int)i).ToArray() };
             var result = new List<int[]>();
             var breaks = new byte[] {6,6,6,6,6};
             var breakId = 0;
@@ -92,6 +96,8 @@ namespace ReversePolishNotation
             var calc = new RpnCalculator();
             var count = 0;
             var numsets = GetNumsets(x);
+
+            calc.Calculate(new int[] {19, 1, 9, 4}, new byte[] {1, 0, 2, 1}, new byte[] {2, 3, 0});
             for (var i = 0; i < numsets.Length; i++)
             {
                 var l = numsets[i].Length - 1;
@@ -117,11 +123,17 @@ namespace ReversePolishNotation
             }
         }
 
+        private struct ResExpression
+        {
+            public int[] numset;
+            public int count;
+        }
+        
         static void Main(string[] args)
         {
 
-         //   TestNumber(new byte[] {9,9,8,1,0,5});
-         //   return;
+           // TestNumber(new byte[] {1,9,1,0,9,4});
+           // return; //drsawerwrewre    dsfsdffsdfsdassdasd
             var opCodes = GenerateOpCodes();
 
             var options = new Options {CreateIfMissing = true};
@@ -130,17 +142,24 @@ namespace ReversePolishNotation
             var enumerator = new NumsetEnumerator();
             var calc = new RpnCalculator();
             var data = new List<byte[]>(1000000);
-       /*     var e = db.GetEnumerator();
+            var e = db.GetEnumerator();
+            
+           /* var ii  = 0;
+            var a = new ResExpression[100];
             while (e.MoveNext())
             {
-                Console.WriteLine($"{string.Join("",e.Current.Key)}: {BitConverter.ToInt32(e.Current.Value)}");
-            }*/
+                if (BitConverter.ToInt32(e.Current.Value) >= 2 && BitConverter.ToInt32(e.Current.Value) <= 10)
+                    ii++;
+            }
+            Console.WriteLine(ii);
 
+            return;
+*/
 
             while (enumerator.MoveNext())
-             {
+            {
                  data.Add((byte[])enumerator.Current.Clone());
-             }
+            }
     
              var total = 0;
     
@@ -168,9 +187,11 @@ namespace ReversePolishNotation
                          }
                      }
                  }
-    
+
+                 var num = Interlocked.Increment(ref total);
+                 if (num % 1000 == 0)
+                    Console.WriteLine(num);
                  
-                 Console.WriteLine(Interlocked.Increment(ref total));
                  if (count > 0)
                  {
                      db.Put(x, BitConverter.GetBytes(count));

@@ -27,6 +27,29 @@ namespace ReversePolishNotation
                     1, 1
                 }
             },
+            new[] // 4 numbers
+            {
+                new byte[]
+                {
+                    0, 0, 3
+                },
+                new byte[]
+                {
+                    0, 1, 2
+                },
+                new byte[]
+                {
+                    0, 2, 1
+                },
+                new byte[]
+                {
+                    1, 0, 2
+                },
+                new byte[]
+                {
+                    1, 1, 1
+                },
+            },
             new[] // 5 numbers
             {
                 new byte[]
