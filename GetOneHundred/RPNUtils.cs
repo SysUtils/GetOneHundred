@@ -33,13 +33,14 @@ namespace ReversePolishNotation
                             numStack.Push(num1 * num2);
                             break;
                         case OpCode.Div:
-                            if (num2 == 0) return -0;
+                            if (num2 == 0) return -0; // /0 invalid operation returns != 100
                             numStack.Push(num1 / num2);
                             break;
                         case OpCode.Add:
                             numStack.Push(num1 + num2);
                             break;
                         case OpCode.Sub:
+                            if (num2 == 0) return -0; // +-0 equal ops, returns != 100
                             numStack.Push(num1 - num2);
                             break;
                     }
