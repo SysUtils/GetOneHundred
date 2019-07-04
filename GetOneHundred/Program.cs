@@ -30,7 +30,7 @@ namespace ReversePolishNotation
 
         private static int[][] GetNumsets(byte[] numset)
         {
-            return new[] {numset.Select(i => (int) i).ToArray()};
+            return new[] {numset.Select(x => (int) x).ToArray()};
         }
 
         private static void TestNumber(byte[] x)

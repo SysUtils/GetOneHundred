@@ -86,6 +86,10 @@ namespace ReversePolishNotation
                     lastPriority = opcodes[codeId + mask[i] - 1] / 2;
                     codeId += mask[i];
                 }
+                else
+                {
+                    lastPriority = -1;
+                }
 
             return true;
         }
